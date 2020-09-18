@@ -1,0 +1,18 @@
+class Solution:
+    def findTargetSumWays(self, nums: List[int], S: int) -> int:
+        def rec(nums,S,n,memo):
+            if n==0 and S==0:
+                return 1
+            
+            elif n==0:
+                return 0
+            
+            if (n,S) in memo: 
+                return memo[(n,S)]
+            
+            memo[(n,S)] = rec(nums,S-nums[n-1],n-1,memo) + rec(nums,S+nums[n-1],n-1,memo)
+            return memo[(n,S)]
+        
+        n=len(nums)
+        memo = {}
+        return rec(nums,S,n,memo)
