@@ -1,0 +1,54 @@
+class Trienode:
+    def __init__(self):
+        self.childs = {}
+        self.EOW = False
+        self.wrd = None
+        self.remaining = set()
+        
+class MagicDictionary:
+    
+    def __init__(self):
+        self.root = Trienode()
+        
+    def buildDict(self, dictionary: List[str]) -> None:
+        
+        for word in dictionary:
+            curr = self.root
+            n = len(word)
+            for i in range(n):
+                if word[i] not in curr.childs:
+                    curr.childs[word[i]] = Trienode()
+                curr = curr.childs[word[i]]
+                curr.remaining.add(word[i+1:])
+            curr.EOW = True
+            curr.wrd = word
+        
+        
+    def search(self, searchWord: str) -> bool:
+        curr = self.root
+        n = len(searchWord)
+
+        for i in range(n):
+            
+            if searchWord[i] in curr.childs:
+                srch = searchWord[i+1:]
+                curr2 = curr
+                for adj in curr.childs:
+                    curr2 = curr.childs[adj]
+                    if adj != searchWord[i] and srch in curr2.remaining:
+                        return True
+                curr = curr.childs[searchWord[i]]
+            else:
+                srch = searchWord[i+1:]
+                curr2 = curr
+                for adj in curr.childs:
+                    curr2 = curr.childs[adj]
+                    if srch in curr2.remaining:
+                        return True
+                return False
+        return False
+
+# Your MagicDictionary object will be instantiated and called as such:
+# obj = MagicDictionary()
+# obj.buildDict(dictionary)
+# param_2 = obj.search(searchWord)
