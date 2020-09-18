@@ -1,0 +1,39 @@
+class Trienode:
+    def __init__(self):
+        self.childs = {}
+        self.EOW = False
+        self.wrd = ""
+class Solution:
+    def insert(self,word,root):
+        curr = root
+        for letter in word:
+            if letter not in curr.childs:
+                curr.childs[letter] = Trienode()
+            curr = curr.childs[letter]
+        curr.EOW = True
+        curr.wrd = word
+        
+    def replaceWords(self, dictionary: List[str], sentence: str) -> str:
+        words = sentence.split(" ")
+        
+        root = Trienode()
+        
+        for word in dictionary:
+            self.insert(word,root)
+        curr = root
+        n = len(words)
+        for i in range(n):
+            curr = root
+            
+            if words[i][0] in curr.childs:
+                for letter in words[i]:
+
+                    if curr.EOW == True:
+                        words[i] = curr.wrd
+                        break
+                    elif letter not in curr.childs:
+                        break                  
+                    else:
+                        curr = curr.childs[letter]
+
+        return ' '.join(words)
