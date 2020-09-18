@@ -1,0 +1,31 @@
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        #indegree = [0]*numCourses
+        g = {}
+        marked = [False]*numCourses
+        curr = [0]*numCourses
+        for i in range(numCourses):
+            g[i] = []
+        for i in prerequisites:
+            g[i[0]].append(i[1])
+            #indegree[i[1]] += 1
+        #print(g)
+        def cycle(g,curr,marked,vert):
+            marked[vert] = True
+            curr[vert] = 1
+            for adj in g[vert]:
+                #print(curr,marked)
+                if curr[adj] == 1:
+                    return True
+                elif marked[adj] == False:
+                    if cycle(g,curr,marked,adj) == True:
+                        return True
+            curr[vert] = 0
+            return False
+        for i in range(numCourses):
+            if marked[i] == False:
+                if cycle(g,curr,marked,i):
+                    return False
+        return True
+        
+                
