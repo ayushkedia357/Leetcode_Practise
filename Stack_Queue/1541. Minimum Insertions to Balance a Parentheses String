@@ -1,0 +1,31 @@
+class Solution:
+    def minInsertions(self, s: str) -> int:
+        stack = []
+        n = len(s)
+        res = 0
+        i=0
+        
+        while(i<n):
+            if s[i]=='(':
+                stack.append(s[i])
+                i+=1
+                continue
+            elif stack and s[i]==')':
+                if i+1<n and s[i+1]==')':
+                    stack.pop()
+                    i+=2
+                else:
+                    res+=1
+                    stack.pop()
+                    i+=1
+            else:
+                if i+1<n and s[i+1]==')':
+                    res+=1
+                    i+=2
+                else:
+                    res+=2
+                    i+=1
+            #print(res)
+        
+        res += 2*len(stack)
+        return res
