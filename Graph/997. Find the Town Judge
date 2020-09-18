@@ -1,0 +1,22 @@
+class Solution:
+    def findJudge(self, N: int, trust: List[List[int]]) -> int:
+        if trust==[] and N==1:
+            return 1
+        indegree=[0]*N
+        outdegree=[0]*N
+        maxindegree=[0,0]
+        minoutdegree=[0,0]
+        for i in trust:
+            indegree[i[1]-1]+=1
+            outdegree[i[0]-1]+=1
+            if maxindegree[1]<indegree[i[1]-1]:
+                maxindegree=[i[1],indegree[i[1]-1]]
+            if minoutdegree[1]>outdegree[i[0]-1]:
+                minoutdegree=[i[0],outdegree[i[0]-1]]
+        
+        #print(maxindegree,minoutdegree)
+        
+        if maxindegree[1]==N-1 and outdegree[maxindegree[0]-1]==0:
+            return maxindegree[0]
+        return -1
+            
