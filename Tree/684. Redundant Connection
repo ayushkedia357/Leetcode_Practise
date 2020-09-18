@@ -1,0 +1,24 @@
+class Solution:
+    def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
+        itsid=[]
+        graph={}
+        redundant=[]
+        maxi=-1
+        for i in range(1001):
+            itsid.append(i)
+        for i in edges:
+            maxi=max(maxi,i[0],i[1])
+            if itsid[i[0]]==itsid[i[1]]:
+                redundant=i
+            else:
+                #print(graph,itsid[:11])
+                graph[i[0]]=graph.get(i[0],[])+[i[1]]
+                graph[i[1]]=graph.get(i[1],[])+[i[0]]
+                temp=itsid[i[1]]
+                itsid[i[1]]=itsid[i[0]]
+                if len(graph[i[1]])>1:
+                    for j in range(maxi+1):
+                        if itsid[j]==temp:
+                            itsid[j]=itsid[i[0]]
+        print(itsid[:11])    
+        return redundant
