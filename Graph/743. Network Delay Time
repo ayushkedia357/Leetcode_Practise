@@ -1,0 +1,30 @@
+class Solution:
+    def networkDelayTime(self, times: List[List[int]], N: int, K: int) -> int:
+        
+        def dfs(graph,dist,k,time):
+            if time>=dist[k]:
+                return
+            
+            dist[k]=time
+            #print(graph,dist)
+            for i0,i1 in sorted(graph[k]):
+                dfs(graph,dist,i1,time+i0)
+            
+            
+        graph={}
+        
+        for i in times:
+            graph[i[0]]=graph.get(i[0],[])+[(i[2],i[1])]
+            
+        dist={}
+        
+        for i in range(N):
+            dist[i+1]=dist.get(i+1,(2**31)-1)
+            graph[i+1]=graph.get(i+1,[])
+            
+        dfs(graph,dist,K,0)
+        #print(dist)
+        res=max(dist.values())
+        if res<(2**31)-1:
+            return res
+        return -1
