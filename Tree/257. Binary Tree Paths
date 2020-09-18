@@ -1,0 +1,24 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def binaryTreePaths(self, root: TreeNode) -> List[str]:
+        def traversal(root,arr,res):
+            if root==None:
+                return res
+            arr=arr+str(root.val)+"->"
+            res=traversal(root.left,arr,res)
+            res=traversal(root.right,arr,res) 
+            if root.left==None and root.right==None:
+                res.append(arr[:-2])
+                #print(arr)
+            return res
+    
+        res=[]
+        arr=""
+        res=traversal(root,arr,res)
+        #print(res)
+        return res
