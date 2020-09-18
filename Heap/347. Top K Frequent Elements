@@ -1,0 +1,40 @@
+class Solution:
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        def heapify(charheap,d,a):
+            while(a>0 and d[charheap[((a+1)//2)-1]]<d[charheap[a]]):
+                temp=charheap[((a+1)//2)-1]
+                charheap[((a+1)//2)-1]=charheap[a]
+                charheap[a]=temp
+                a=((a+1)//2)-1
+                
+        def heap(charheap,d,j,a):
+            while(2*j+1<a):
+                if(2*j+2<a):
+                    if(d[charheap[2*j+1]]>d[charheap[2*j+2]]):
+                        temp=2*j+1
+                    else:
+                        temp=2*j+2
+                else:
+                    temp=2*j+1
+                if (d[charheap[j]]<d[charheap[temp]]):
+                    tempval=charheap[j]
+                    charheap[j]=charheap[temp]
+                    charheap[temp]=tempval
+                else:
+                    break
+                j=temp
+        d={}
+        for i in nums:
+            d[i]=d.get(i,0)+1
+        charheap=[]
+        for i in d:
+            charheap.append(i)
+            heapify(charheap,d,len(charheap)-1)
+        res=[]
+        length=len(charheap)-1
+        for i in range(k):
+            res.append(int(charheap[0]))
+            charheap[0]=charheap[length]
+            heap(charheap,d,0,length)
+            length-=1
+        return res
