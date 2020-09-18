@@ -1,0 +1,42 @@
+class Solution:
+    def rec(self,memo,t1,t2,n,m):
+        if n==0 or m==0:
+            return 0
+        if memo[m][n] != -1:
+            return memo[m][n]
+        
+        if t1[n-1] == t2[m-1]:
+            memo[m][n] = 1 + self.rec(memo,t1,t2,n-1,m-1)
+        else:
+            memo[m][n] = max(self.rec(memo,t1,t2,n-1,m),self.rec(memo,t1,t2,n,m-1))
+        #print(memo[m][n])
+        return memo[m][n]
+        
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        '''
+        #rec --- TLE
+        #memo + rec --- accepted
+        n = len(text1)
+        m = len(text2)
+        memo = [[-1 for i in range(n+1)] for j in range(m+1)]
+        #print(memo)
+        if n==0 or m==0:
+            return 0
+        
+        return self.rec(memo,text1,text2,n,m)
+        '''
+        #dp using 2d
+        n = len(text1)
+        m = len(text2)
+        memo = [[0 for i in range(n+1)] for j in range(m+1)]
+        #print(memo)
+        if n==0 or m==0:
+            return 0
+        
+        for i in range(1,m+1):
+            for j in range(1,n+1):
+                if text1[j-1] == text2[i-1]:
+                    memo[i][j] = 1 + memo[i-1][j-1]
+                else:
+                    memo[i][j] = max(memo[i-1][j],memo[i][j-1])
+        return memo[m][n]
