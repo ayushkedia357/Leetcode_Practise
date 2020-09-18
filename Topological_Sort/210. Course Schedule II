@@ -1,0 +1,67 @@
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        '''
+        #using kahns algo
+        indegree = [0]*numCourses
+        g = {}
+
+        for i in range(numCourses): #initialing all the courses
+            g[i] = []
+            
+        for i in prerequisites:
+            g[i[1]].append(i[0])    #building grph
+            indegree[i[0]] += 1     #building indegree
+            
+        q = []
+        topo = []
+        for i in range(numCourses):     #append all the nodes with indegree zero as they the independent ones
+            if indegree[i] == 0:
+                q.append(i)
+                topo.append(i)
+
+        count = numCourses
+        while(q):                   
+            ele = q.pop(0)
+            count -= 1
+            for adj in g[ele]:          #decrementing the indegree until 0 
+                indegree[adj] -= 1
+                if indegree[adj]  == 0:
+                    q.append(adj)       #appending it to q when 0
+                    topo.append(adj)    #same will be append to the topological sorted array also
+        if count==0:
+            return topo
+        return []
+        '''
+        
+        g = {}
+        marked = [False]*numCourses
+        curr = [0]*numCourses
+        
+        for i in range(numCourses):
+            g[i] = []
+            
+        for i in prerequisites:  #graph building
+            g[i[1]].append(i[0])
+
+        topo = []
+        
+        def cycle(g,curr,marked,vert,topo):
+            marked[vert] = True             #marking true
+            curr[vert] = 1                  #set the InExecution arr to 1
+            for adj in g[vert]:     
+                #print(curr,marked) 
+                if curr[adj] == 1:         #if InExecution set and still called again => cycle. 
+                    return True
+                elif marked[adj] == False:
+                    if cycle(g,curr,marked,adj,topo) == True:
+                        return True
+            curr[vert] = 0
+            topo.insert(0,vert)
+            return False
+        for i in range(numCourses):
+            if marked[i] == False:
+                if cycle(g,curr,marked,i,topo):
+                    return []
+        return topo
+        
+                
