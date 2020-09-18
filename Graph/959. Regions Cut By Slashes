@@ -1,0 +1,65 @@
+class Solution:
+    def regionsBySlashes(self, grid: List[str]) -> int:
+        def root(triangles,node):
+            while(triangles[node]!=node):
+                node=triangles[node]
+            return node
+        
+        def union(triangles,node1,node2):
+            x=root(triangles,node1)
+            y=root(triangles,node2)
+            if x==y:
+                return 
+            triangles[x]=y
+            triangles[node1]=y
+            
+        triangles={}
+        n=len(grid)
+        for i in range(n):
+            for j in range(n):
+                for k in range(4):
+                    triangles[(i,j,k)]=(i,j,k)
+        #connecting the common triangles/connecting all the squares.
+        '''
+        for i in range(n):
+            for j in range(n):
+                if i+1<n:
+                    triangles[(i+1,j,1)]=(i,j,3)
+                if j+1<n:
+                    triangles[(i,j+1,0)]=(i,j,2)
+        '''
+        print(triangles)
+        for i in range(n):
+            for j in range(n):
+                if i+1<n:
+                    triangles[(i+1,j,1)]=(i,j,3)
+                if j+1<n:
+                    triangles[(i,j+1,0)]=(i,j,2)
+                temp=grid[i][j]
+                if temp==' ':
+                    union(triangles,(i,j,1),(i,j,0))
+                    union(triangles,(i,j,2),(i,j,0))
+                    union(triangles,(i,j,3),(i,j,0))
+                elif temp=='/':
+                    union(triangles,(i,j,1),(i,j,0))
+                    union(triangles,(i,j,3),(i,j,2))
+                else:
+                    union(triangles,(i,j,1),(i,j,2))
+                    union(triangles,(i,j,0),(i,j,3))
+        
+        '''
+        res=set()
+        
+        for i in range(n):
+            for j in range(n):
+                for k in range(4):
+                    parent=root(triangles,triangles[(i,j,k)])
+                    res.add(parent)
+        '''
+        res=0
+        for x in triangles:
+            if triangles[x]==x:
+                res+=1
+        
+        #print(triangles)
+        return (res)
