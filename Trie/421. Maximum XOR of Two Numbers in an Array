@@ -1,0 +1,54 @@
+class Trienode:
+    one = None
+    zero = None
+    value = None
+        
+class Solution:
+    def findMaximumXOR(self, nums: List[int]) -> int:
+        highest = max(nums)
+        i = 0
+        while(2**i <= highest):
+            i += 1
+        highestBit = i - 1
+        root = Trienode()
+        for num in nums:
+            curr = root
+            for bit in range(highestBit,-1,-1):
+                mask = 1 << bit
+                masked = mask & num
+                if masked == 0:
+                    if curr.zero == None:
+                        curr.zero = Trienode()
+                    curr = curr.zero
+                else:
+                    if curr.one == None:
+                        curr.one = Trienode()
+                    curr = curr.one
+            curr.value = num
+        
+        maxXOR = 0
+        
+        for num in nums:
+            curr = root
+            for bit in range(highestBit,-1,-1):
+                
+                mask = 1 << bit
+                masked = mask & num
+                
+                if masked == 0:
+                    if curr.one != None:
+                        curr = curr.one
+                    else:
+                        curr = curr.zero
+                
+                else:
+                    if curr.zero != None:
+                        curr = curr.zero
+                    else:
+                        curr = curr.one
+            #print(curr.value)
+            maxForNum = num ^ curr.value
+            maxXOR = max(maxXOR , maxForNum)
+        
+        return maxXOR
+        
