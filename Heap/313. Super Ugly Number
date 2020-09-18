@@ -1,0 +1,18 @@
+class Solution:
+    def nthSuperUglyNumber(self, n: int, primes: List[int]) -> int:
+        if n==1:
+            return 1
+        l=[1]
+        prev=0
+        heapq.heapify(l)
+        for i in range(n-1):
+            #print(l)
+            ele=heapq.heappop(l)
+            while ele==prev:
+                ele=heapq.heappop(l)
+            prev=ele
+            for j in primes:
+                heapq.heappush(l,ele*j)
+        while l[0]==prev:
+            ele=heapq.heappop(l)
+        return l[0]
