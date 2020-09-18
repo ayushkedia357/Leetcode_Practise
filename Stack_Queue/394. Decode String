@@ -1,0 +1,45 @@
+class Solution:
+    def decodeString(self, s: str) -> str:
+        alphas = []
+        i = 0
+        N = len(s)
+        
+        while(i < N):
+            
+            if s[i].isdigit():
+                digits = ""
+                while s[i].isdigit() == True:
+                    digits += s[i]
+                    i += 1
+                    
+                alphas.append(int(digits))
+                
+            elif s[i] == '[':
+                alphas.append(s[i])
+                i += 1
+                
+            elif s[i] == ']':
+                currstring = ""
+                while alphas[-1] != "[":
+                    currstring = alphas.pop() + currstring
+                    
+                alphas.pop()   #for '['
+                times = alphas.pop()
+                currstring = currstring*times
+                alphas.append(currstring)
+                i += 1
+                
+            else:
+                string = ""
+                while i < N and s[i] != ']' and s[i].isdigit() == False:
+                    string += s[i]
+                    i += 1
+                alphas.append(string)
+                
+                
+                
+        res = ""
+        for i in alphas:
+            res += i
+            
+        return res
