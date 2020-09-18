@@ -1,0 +1,41 @@
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        def maxheap(charheap,a):
+            while(a>0 and charheap[((a+1)//2)-1]>charheap[a]):
+                temp=charheap[((a+1)//2)-1]
+                charheap[((a+1)//2)-1]=charheap[a]
+                charheap[a]=temp
+                a=((a+1)//2)-1
+                
+        def heapify(charheap,j,a):
+            while(2*j+1<a):
+                if(2*j+2<a):
+                    if(charheap[2*j+1]<charheap[2*j+2]):
+                        temp=2*j+1
+                    else:
+                        temp=2*j+2
+                else:
+                    temp=2*j+1
+                if charheap[j]>charheap[temp]:
+                    tempval=charheap[j]
+                    charheap[j]=charheap[temp]
+                    charheap[temp]=tempval
+                else:
+                    break
+                j=temp
+        klist=nums[:k]
+        for m in range(k//2,-1,-1):
+            heapify(klist,m,k)
+        i=k
+        '''
+        while(i<k):
+            klist.append(nums[i])
+            maxheap(klist,i)
+            i+=1
+        '''
+        while(i<len(nums)):
+            if(nums[i]>klist[0]):
+                klist[0]=nums[i]
+                heapify(klist,0,k)
+            i+=1
+        return klist[0]
