@@ -1,0 +1,57 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def diameterOfBinaryTree(self, root: TreeNode) -> int:
+        #return 
+        stack=[]
+        d={}
+        maxi=0
+        temp=root
+        while(1):
+            if temp!=None:
+                if(temp.right!=None):
+                    stack.append(temp.right)
+                stack.append(temp)
+                temp=temp.left
+            elif(temp==None and stack):
+                temp=stack.pop()
+                if temp.right==None:
+                    if temp.left:
+                        d[temp]=d[temp.left]+1
+                    else:
+                        d[temp]=0
+                    maxi=max(maxi,d[temp])
+                    temp=None
+                elif(stack):
+                    temp1=stack[-1]
+                    if(temp1==temp.right):
+                        temp1=stack.pop()
+                        stack.append(temp)
+                        temp=temp1
+                    else:
+                        if temp.left!=None:
+                            d[temp]=max(d[temp.right],d[temp.left])+1
+                            maxi=max(maxi,min(d[temp.right],d[temp.left])+d[temp]+1)
+                            temp=None
+                            continue
+                        else:
+                            d[temp]=d[temp.right]+1
+                        maxi=max(maxi,d[temp])
+                        temp=None
+                else:
+                    if temp.left:
+                        d[temp]=max(d[temp.right],d[temp.left])+1
+                        maxi=max(maxi,min(d[temp.right],d[temp.left])+d[temp]+1)
+                        temp=None
+                        continue
+                    else:
+                        d[temp]=d[temp.right]+1
+                    maxi=max(maxi,d[temp])
+                    temp=None
+            else:
+                break
+        return maxi
