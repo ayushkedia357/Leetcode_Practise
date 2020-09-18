@@ -1,0 +1,41 @@
+class Trienode:
+    def __init__(self):
+        self.childs = {}
+        self.EOW = False
+        self.wrd = None
+class Solution:
+    def insert(self,word,root,pattern,i):
+        curr = root
+        n = len(pattern)
+        
+        for letter in word:
+            if i<n and letter == pattern[i]:
+                i += 1
+            elif letter.isupper():
+                return False
+            
+            if letter not in curr.childs:
+                curr.childs[letter] = Trienode()
+            curr = curr.childs[letter]
+            
+        curr.EOW = True
+        curr.wrd = word
+        
+        return i==n
+        
+    def camelMatch(self, queries: List[str], pattern: str) -> List[bool]:
+        root = Trienode()
+        res = []
+        for word in queries:
+            res.append(self.insert(word,root,pattern,0))
+        
+        return res
+    '''
+        
+        res = []
+        n = len(pattern)
+        
+        for word in queries:
+            curr = root
+            while curr.EOW
+    '''
