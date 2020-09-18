@@ -1,0 +1,29 @@
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        alpha = {}
+        startIn = 0
+        endIn = 0
+        length = len(s)
+        substrlen = 0
+        maxlen = 0
+        
+        while(endIn < length):
+            #print(substrlen,maxlen,startIn,alpha)
+            if s[endIn] in alpha:
+                if alpha[s[endIn]]<startIn:
+                    alpha[s[endIn]] = endIn
+                    substrlen += 1
+                else:
+                    maxlen = max(maxlen,substrlen)
+                    substrlen -= (alpha[s[endIn]] - startIn)
+                    startIn = alpha[s[endIn]]+1
+                    alpha[s[endIn]] = endIn
+                    
+            else:
+                alpha[s[endIn]] = endIn
+                substrlen += 1
+            #print(substrlen,maxlen,startIn,alpha)
+            endIn += 1
+        return max(maxlen,substrlen)                
+                
+                
