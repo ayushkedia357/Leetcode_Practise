@@ -1,0 +1,36 @@
+class Solution:
+    def longestWord(self, words: List[str]) -> str:
+        trie = {}
+        for i in words:
+            curr = trie
+            for j in i:
+                if j not in curr:
+                    curr[j] = {}
+                curr = curr[j]
+            curr['*'] = True
+
+        words = set(words)
+        words = sorted(words)
+        eow = '*'
+        maxlen = 0
+        maxstr = ""
+        
+        for i in words:
+            longest = True
+            curr = trie
+            if(len(i) == maxlen):
+                continue
+            for j in i:
+                if eow in curr[j]:
+                    curr = curr[j]
+                else:
+                    longest = False
+                    break
+            
+            if longest == True:
+                if len(i)>maxlen:
+                    maxlen = len(i)
+                    maxstr = i
+            #print(maxstr)
+        return maxstr
+        
