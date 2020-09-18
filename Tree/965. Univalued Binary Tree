@@ -1,0 +1,20 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isUnivalTree(self, root: TreeNode) -> bool:
+        #if root==None:
+         #   return 
+        top=root.val
+        def checkunival(root,top):
+            if root==None:
+                return True
+            if root.val!=top:
+                return False
+            return checkunival(root.left,top) and checkunival(root.right,top)
+            
+        return checkunival(root,top)
+        #return top==root.val
