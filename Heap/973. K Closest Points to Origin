@@ -1,0 +1,36 @@
+class Solution:
+    def kClosest(self, points: List[List[int]], K: int) -> List[List[int]]:
+        def swap(a,b):
+            temp1=a
+            a=b
+            b=temp1
+            return a,b
+            
+        def distance(vect):
+            return vect[0]**2+vect[1]**2
+        
+        def heap(l,j,a):
+            while(2*j+1<a):
+                if(2*j+2<a):
+                    if(distance(l[2*j+1])<distance(l[2*j+2])):
+                        temp=2*j+1
+                    else:
+                        temp=2*j+2
+                else:
+                    temp=2*j+1
+                if (distance(l[j])>distance(l[temp])):
+                    l[j],l[temp]=swap(l[j],l[temp])
+                else:
+                    break
+                j=temp
+        for i in range((len(points)//2)-1,-1,-1):
+            heap(points,i,len(points))
+        res=[]
+        count=0
+        leng=len(points)
+        while(count<K):
+            res.append(points[0])
+            points[0],points[leng-count-1]=swap(points[0],points[-count-1])
+            count+=1
+            heap(points,0,leng-count)
+        return res
