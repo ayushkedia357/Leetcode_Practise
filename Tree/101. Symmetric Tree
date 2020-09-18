@@ -1,0 +1,133 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isSymmetric(self, root: TreeNode) -> bool:
+        '''
+        def inorder(root,res):
+            if root==None:
+                return res
+            res=inorder(root.left,res)
+            res.append(root.val)
+            res=inorder(root.right,res)
+            return res
+        
+        def tilt(root):
+            if root==None:
+                return root
+            l=tilt(root.left)
+            r=tilt(root.right)
+            root.left=r
+            root.right=l
+            return root
+        
+        res1=[]
+        res2=[]
+        res1=inorder(root,res1)
+        tilt(root)
+        res2=inorder(root,res2)
+        return res1==res2
+        
+        
+        #stack_iterative
+        
+        stack=[]
+        res1=[]
+        res2=[]
+        root1=root
+        while(1):
+            if root:
+                stack.append(root)
+                root=root.left
+            elif(stack):
+                temp=stack.pop()
+                if(temp.right and temp.left==None):
+                    res1.append(None)
+                if temp==root1:
+                    break
+                res1.append(temp.val)
+                root=temp.right
+            else:
+                break
+        print(res1)
+        root=root1
+        while(1):
+            if root:
+                stack.append(root)
+                root=root.right
+            elif(stack):
+                temp=stack.pop()
+                if(temp.left and temp.right==None):
+                    res2.append(None)
+                #print(temp.val)
+                if temp==root1:
+                    break
+                res2.append(temp.val)
+                root=temp.left
+                if(temp.left and temp.right==None):
+                    res2.append(None)
+            else:
+                break
+        print(res2)
+        return res1==res2
+        
+        #recursion_using_2nodes
+        def symm(l,r):
+            if l==None and r==None:
+                return True
+            elif (l==None and r!=None):
+                return False
+            elif (l!=None and r==None):
+                return False
+            elif (l.val!=r.val):
+                return False
+            else:
+                return symm(l.left,r.right) and symm(l.right,r.left)
+        if root == None:
+            return True
+        return symm(root.left,root.right)
+        '''
+        def checksymm(l):
+            i=0
+            n=len(l)
+            while(i<n/2):
+                if l[i]!=l[n-i-1]:
+                    return False
+                i+=1
+            return True
+        
+        if root==None:
+            return True
+        q=[]
+        q.append(root)
+        q.append(None)
+        symmlist=[]
+        while(q[0]):
+            temp=q.pop(0)
+            while(temp):
+                if temp.right and temp.left:
+                    q.append(temp.left)
+                    symmlist.append(temp.left.val)
+                    q.append(temp.right)
+                    symmlist.append(temp.right.val)
+                elif temp.right==None and temp.left:
+                    q.append(temp.left)
+                    symmlist.append(temp.left.val)
+                    symmlist.append(None)
+                elif temp.right and temp.left==None:
+                    symmlist.append(None)
+                    q.append(temp.right)
+                    symmlist.append(temp.right.val)
+                else:
+                    symmlist.append(None)
+                temp=q.pop(0)
+            #print(symmlist)
+            symm=checksymm(symmlist)
+            symmlist=[]
+            if symm==False:
+                return False
+            q.append(None)
+        return True
