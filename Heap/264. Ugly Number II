@@ -1,0 +1,14 @@
+import heapq
+class Solution:
+    def nthUglyNumber(self, n: int) -> int:
+        l=[1]
+        prime=[2,3,5]
+        heapq.heapify(l)
+        for i in range(n-1):
+            ele=heapq.heappop(l)
+            for j in prime:
+                if ele*j not in l:
+                    heapq.heappush(l,ele*j)
+        return l[0]
+        
+        
