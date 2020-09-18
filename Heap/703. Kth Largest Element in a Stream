@@ -1,0 +1,49 @@
+class KthLargest:
+    def heapi(self,j,a):
+        while(a>0 and self.heap[((a+1)//2)-1]>self.heap[a]):
+        
+            tempval=self.heap[((a+1)//2)-1]
+            self.heap[((a+1)//2)-1]=self.heap[a]
+            self.heap[a]=tempval
+            a=((a+1)//2)-1
+            
+    def heapify(self,j,a):
+        while(2*j+1<a):
+            if(2*j+2<a):
+                if(self.heap[2*j+1]<self.heap[2*j+2]):
+                    temp=2*j+1
+                else:
+                    temp=2*j+2
+            else:
+                temp=2*j+1
+            if (self.heap[j]>self.heap[temp]):
+                tempval=self.heap[j]
+                self.heap[j]=self.heap[temp]
+                self.heap[temp]=tempval
+            else:
+                break
+            j=temp
+    
+    def __init__(self, k: int, nums: List[int]):
+        self.heap=[]
+        self.k=k
+        for i in range(len(nums)):
+            self.add(nums[i])
+        #[8,5,4,2,3]
+    def add(self, val: int) -> int:
+        if(len(self.heap)<self.k):
+            self.heap.append(val)
+            self.heapi(0,len(self.heap)-1)
+        elif(self.heap[0]<=val):
+            self.heap[0]=val
+    
+            self.heapify(0,len(self.heap))
+        #print(self.heap)
+        
+        #print(self.heap)
+        return self.heap[0]
+    
+
+# Your KthLargest object will be instantiated and called as such:
+# obj = KthLargest(k, nums)
+# param_1 = obj.add(val)
