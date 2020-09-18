@@ -1,0 +1,49 @@
+import heapq
+class Solution:
+    def getKth(self, lo: int, hi: int, k: int) -> int:
+        heap=[]
+        def steps(step,ele):
+            if ele==1:
+                #print("qwert")
+                return -1
+            if ele in step:
+                return step[ele]-1
+            if ele%2==1:
+                ele=ele*3+1
+            else:
+                ele=ele//2
+            #print(ele)
+            count=1+steps(step,ele)
+            step[ele]=count
+            return count
+        step={}
+        #return
+        i=lo
+        while(i<hi+1):
+            if i in step:
+                #print(123)
+                #heapq.heappush(heap,(i,step[i]))
+                heap.append((i,step[i]))
+            else:
+                count=steps(step,i)
+                
+                step[i]=count+1
+                #print(count,step)
+                #heapq.heappush(heap,(i,count+1))
+                
+                heap.append((i,count+1))
+            i+=1
+        #print(heap)
+        heap=sorted(heap,key=lambda x:x[1])
+        #print(heap)
+        
+            
+        
+        return heap[k-1][0]
+    
+        return heap[0][0]
+        print(heap)
+        res=heapq.heappop(heap)
+        return res[1]
+            
+            
