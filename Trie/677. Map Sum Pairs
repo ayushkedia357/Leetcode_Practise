@@ -1,0 +1,44 @@
+class MapSum:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.trie = {}
+        self.trieset = {}
+
+    def insert(self, key: str, val: int) -> None:
+        
+        curr = self.trie
+        if key in self.trieset:
+            temp = self.trieset[key]
+            for j in key:
+                curr = curr[j]
+                curr['val'] = curr['val'] - temp + val 
+            self.trieset[key] = val
+            return
+        
+        for j in key:
+            if j not in curr:
+                curr[j] = {'val':0}
+                
+            curr = curr[j]
+            curr['val'] += val
+        curr['*'] = True
+        self.trieset[key] = val
+
+    def sum(self, prefix: str) -> int:
+        tot = 0
+        curr = self.trie
+        for j in prefix:
+            if j not in curr:
+                return 0
+            curr = curr[j]
+        
+        return curr['val']
+
+
+# Your MapSum object will be instantiated and called as such:
+# obj = MapSum()
+# obj.insert(key,val)
+# param_2 = obj.sum(prefix)
