@@ -1,0 +1,21 @@
+class Solution:
+    def equalSubstring(self, s: str, t: str, maxCost: int) -> int:
+        l=[]
+        for i in range(len(s)):
+            l.append(abs(ord(s[i])-ord(t[i])))
+        i=0
+        j=-1
+        maxl=0
+        tsum=0
+        while(i<len(l)):
+            while(j<len(l)-1 and tsum<=maxCost):
+                j+=1
+                tsum+=l[j]
+            maxl=max(maxl,j-i)
+            if(j>=len(l)-1):
+                break
+            tsum-=l[i]
+            i+=1
+        if(maxl==j-i and tsum<=maxCost):
+            return maxl+1
+        return maxl
