@@ -1,0 +1,53 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def sumRootToLeaf(self, root: TreeNode) -> int:
+        def traversal(root,arr,res):
+            if root==None:
+                return res
+            arr=arr+str(root.val)
+            res=traversal(root.left,arr,res)
+            res=traversal(root.right,arr,res) 
+            if root.left==None and root.right==None:
+                res.append(arr)
+                print(arr)
+            return res
+    
+        res=[]
+        arr=""
+        res=traversal(root,arr,res)
+        print(res)
+        return
+    '''
+        def value(arr):
+            tot=0
+            n=len(arr)
+            for i in range(n):
+                if arr[i]=='1':
+                    tot=tot+pow(2,n-i-1)
+                #print(tot)
+            return tot
+        
+        def preorder(arr,root,summ):
+            if root==None:
+                return summ
+            #print(root.val)
+            arr=arr+str(root.val)
+            summ=preorder(arr,root.left,summ)
+            #print(arr)
+            summ=preorder(arr,root.right,summ)
+            if root.left==None and root.right==None:
+                #print(arr,summ)
+                temp=value(arr)
+                summ+=temp
+            return summ
+        
+        
+        arr=""
+        summ=0
+        return preorder(arr,root,summ)
+    '''
