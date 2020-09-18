@@ -1,0 +1,29 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def pathSum(self, root: TreeNode, sum1: int) -> int:
+        total=0
+        count=0
+        def currentroottraversal(root,target,count,total):
+            if root==None:
+                return count
+            total+=root.val
+            count=currentroottraversal(root.left,target,count,total)
+            count=currentroottraversal(root.right,target,count,total)
+            if total== target:
+                count+=1
+            return count
+        def traversal(root,target,count,total):
+            if root==None:
+                return count
+            count=currentroottraversal(root,target,count,total)
+            count=traversal(root.left,target,count,total)
+            count=traversal(root.right,target,count,total)
+            return count
+        count=traversal(root,sum1,count,total)
+        return count
+            
